@@ -1,0 +1,6 @@
+.ListWrapper {
+    max-width: 1000px;
+    margin: 15px auto;
+    display: flex;
+    flex-wrap: wrap;
+}

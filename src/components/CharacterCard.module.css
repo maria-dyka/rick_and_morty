@@ -1,0 +1,27 @@
+.Card {
+    flex-basis: 50%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.CardImage {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+}
+
+.CardName {
+    margin: 10px 0 0 0;
+    font-weight: 700;
+    font-size: 1.5em;
+    color: rgb(45, 20, 59);
+}
+
+@media (max-width: 525px) { 
+.Card {
+    flex-basis: 100%;
+}
+}
