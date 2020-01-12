@@ -4,3 +4,29 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.Page, .SelectedPage {
+    display: inline-block;
+    font-size: 20px;
+    color: rgb(45, 20, 59);
+    padding: 2px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.SelectedPage {
+    color: rgb(241, 171, 40);
+    font-weight: 700;
+}
+
+.PagesWrapper {
+    margin: 15px auto;
+    width: max-content;
+}
+
+@media (max-width: 680px) { 
+    .Page, .SelectedPage {
+        font-size: 15px;
+        margin: 0;
+    }
+}
