@@ -7,11 +7,24 @@ import Banner from './components/Banner';
 
 function App() {
   const [characters, setCharacters] = useState([]);
+  const [searchText, setSearchText] = useState('')
+  const [filteredCharacters, setFilteredCharacters] = useState([]);
+
+  const onChangeHandler = e => {
+    setSearchText(e.target.value)
+    const textInput = e.target.value.toLowerCase();
+    if (textInput.length === 0) {
+      setFilteredCharacters(characters);
+    } else {
+      setFilteredCharacters(characters.filter(c => c.name.toLowerCase().indexOf(textInput) >= 0));
+    }
+  }
 
   useEffect(() => {
     axios.get('https://rickandmortyapi.com/api/character/')
       .then(resp => {
         setCharacters(resp.data.results);
+        setFilteredCharacters(resp.data.results);
         console.log(resp.data.results)
       })
       .catch(err => {
@@ -20,9 +33,9 @@ function App() {
   }, [])
   return (
     <div className={styles.App}>
-      <Banner/>
+      <Banner value={searchText} onChange={onChangeHandler}/>
       <div className={styles.ListWrapper}>
-        {characters.map(character => 
+        {filteredCharacters.map(character => 
           <CharacterCard 
             key={character.id}
             name={character.name}
