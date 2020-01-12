@@ -10,28 +10,58 @@ const Home = () => {
     const [searchText, setSearchText] = useState('');
     const [filteredCharacters, setFilteredCharacters] = useState([]);
     const [pages, setPages] = useState({total: 1, current:1});
+    const [sortType, setSortType] = useState('');
+
+    const makeRequest = (url, selected = 1) => {
+        axios.get(url)
+            .then(resp => {
+                setPages({total: resp.data.info.pages, current: selected});
+                setCharacters(resp.data.results);
+                setFilteredCharacters(resp.data.results);
+                setSortType('');
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
 
     const onChangeHandler = e => {
         setSearchText(e.target.value)
         const textInput = e.target.value.toLowerCase();
         if (textInput.length === 0) {
-        setFilteredCharacters(characters);
+            makeRequest('https://rickandmortyapi.com/api/character/');
         } else {
-        setFilteredCharacters(characters.filter(c => c.name.toLowerCase().indexOf(textInput) >= 0));
+            makeRequest(`https://rickandmortyapi.com/api/character/?name=${textInput}`);
+        }
+    }
+
+    const onRadioChangeHandler = e => {
+        setSortType(e.target.value);
+        if (e.target.value === 'A-Z') {
+            setFilteredCharacters([...characters].sort((a, b) => {
+                if (a.name > b.name) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }))
+        } else if (e.target.value === 'Z-A') {
+            setFilteredCharacters([...characters].sort((a, b) => {
+                if (a.name < b.name) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }))
         }
     }
 
     const onClickHandler = selected => {
-        axios.get(`https://rickandmortyapi.com/api/character/?page=${selected}`)
-        .then(resp => {
-            setPages({total: resp.data.info.pages, current: selected});
-            setCharacters(resp.data.results);
-            setFilteredCharacters(resp.data.results);
-            console.log(resp.data.results)
-        })
-        .catch(err => {
-            console.log('get characters error: ', err);
-        })
+        if (searchText.length === 0) {
+            makeRequest(`https://rickandmortyapi.com/api/character/?page=${selected}`, selected);
+        } else {
+            makeRequest(`https://rickandmortyapi.com/api/character/?page=${selected}&name=${searchText}`, selected);
+        }
     }
 
     useEffect(() => {
@@ -40,7 +70,6 @@ const Home = () => {
             setPages({total: resp.data.info.pages, current: 1});
             setCharacters(resp.data.results);
             setFilteredCharacters(resp.data.results);
-            console.log(resp.data.results)
         })
         .catch(err => {
             console.log('get characters error: ', err);
@@ -51,22 +80,16 @@ const Home = () => {
 
     return (
         <>
-            <Banner value={searchText} onChange={onChangeHandler}/>
+            <Banner
+                value={searchText}
+                onChange={onChangeHandler}
+                onRadioChange={onRadioChangeHandler}
+                radioValue={sortType}/>
             <div className={styles.PagesWrapper}>
-                {PagesArray.map((page, index) => {
-                    if (index + 1 === pages.current) {
-                        return (
-                        <span
-                            key={index}
-                            className={styles.SelectedPage}
-                            onClick={() => onClickHandler(index + 1)}>{index + 1}</span>
-                        )
-                    }
-                return <span
+                {PagesArray.map((page, index) => (<span
                         key={index}
-                        className={styles.Page} 
-                        onClick={() => onClickHandler(index + 1)}>{index + 1}</span>
-                })}
+                        className={[styles.Page, (index + 1 === pages.current) && styles.SelectedPage].join(' ')} 
+                        onClick={() => onClickHandler(index + 1)}>{index + 1}</span>))}
             </div>
             <div className={styles.ListWrapper}>
                 {filteredCharacters.map(character => 
@@ -78,20 +101,10 @@ const Home = () => {
                     />)}
             </div>
             <div className={styles.PagesWrapper}>
-                {PagesArray.map((page, index) => {
-                    if (index + 1 === pages.current) {
-                        return (
-                        <span
-                            key={index}
-                            className={styles.SelectedPage}
-                            onClick={() => onClickHandler(index + 1)}>{index + 1}</span>
-                        )
-                    }
-                return <span
+                {PagesArray.map((page, index) => (<span
                         key={index}
-                        className={styles.Page} 
-                        onClick={() => onClickHandler(index + 1)}>{index + 1}</span>
-                })}
+                        className={[styles.Page, (index + 1 === pages.current) && styles.SelectedPage].join(' ')} 
+                        onClick={() => onClickHandler(index + 1)}>{index + 1}</span>))}
             </div>
         </>
     );

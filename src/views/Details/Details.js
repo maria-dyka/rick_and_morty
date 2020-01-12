@@ -8,7 +8,6 @@ const Details = props => {
     const [character, setCharacter] = useState({});
 
     useEffect(() =>{
-        console.log('[useEffect] called')
         axios.get(`https://rickandmortyapi.com/api/character/${props.match.params.id}`)
             .then(resp => {
                 setCharacter(resp.data);
