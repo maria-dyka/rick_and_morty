@@ -9,7 +9,7 @@ const Banner = props => {
                 className={styles.BannerInput}
                 value={props.value}
                 onChange={props.onChange}/>
-            <p className={styles.BannerSortTitle}>Sort characters on the page by: </p>
+            <p className={styles.BannerSortTitle}>Sort characters on the page by name: </p>
             <div className={styles.BannerSort}>
                 <input 
                     id="Az" 

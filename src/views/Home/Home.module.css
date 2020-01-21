@@ -12,6 +12,7 @@
     padding: 2px;
     margin: 2px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .SelectedPage {
@@ -22,6 +23,15 @@
 .PagesWrapper {
     margin: 15px auto;
     width: max-content;
+}
+
+.Page:hover, .Page:focus {
+    color: rgb(241, 171, 40);
+    font-weight: 700;
+}
+
+.Page:focus {
+    outline: 0;
 }
 
 @media (max-width: 680px) { 

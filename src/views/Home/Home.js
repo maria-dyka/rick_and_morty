@@ -85,12 +85,16 @@ const Home = () => {
                 onChange={onChangeHandler}
                 onRadioChange={onRadioChangeHandler}
                 radioValue={sortType}/>
-            <div className={styles.PagesWrapper}>
-                {PagesArray.map((page, index) => (<span
+            <nav role="navigation" aria-label="Pagination Navigation" className={styles.PagesWrapper}>
+                {PagesArray.map((page, index) => (<a
+                        href="#"
+                        aria-label={`Goto Page ${index + 1}`}
+                        aria-current={index + 1 === pages.current}
+                        role="link"
                         key={index}
                         className={[styles.Page, (index + 1 === pages.current) && styles.SelectedPage].join(' ')} 
-                        onClick={() => onClickHandler(index + 1)}>{index + 1}</span>))}
-            </div>
+                        onClick={() => onClickHandler(index + 1)}>{index + 1}</a>))}
+            </nav>
             <div className={styles.ListWrapper}>
                 {filteredCharacters.map(character => 
                 <CharacterCard 
@@ -100,12 +104,16 @@ const Home = () => {
                     photo={character.image}
                     />)}
             </div>
-            <div className={styles.PagesWrapper}>
-                {PagesArray.map((page, index) => (<span
+            <nav role="navigation" aria-label="Pagination Navigation" className={styles.PagesWrapper}>
+                {PagesArray.map((page, index) => (<a
+                        href="#"
+                        aria-label={`Goto Page ${index + 1}`}
+                        aria-current={index + 1 === pages.current}
+                        role="link"
                         key={index}
                         className={[styles.Page, (index + 1 === pages.current) && styles.SelectedPage].join(' ')} 
-                        onClick={() => onClickHandler(index + 1)}>{index + 1}</span>))}
-            </div>
+                        onClick={() => onClickHandler(index + 1)}>{index + 1}</a>))}
+            </nav>
         </>
     );
 }
